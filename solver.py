@@ -13,6 +13,7 @@ def getID(item):
 	#color shall be returned from this function
 def getSmallestAvailableColor(coloredNodes, tempNode):
     #coloredNodes: [[nodeID,color],[],[]...]
+
     #tempNode, currentNode:[currentNodeID, node 1, node 2..] node 1, node 2 and etc. are connected with currentNode
     currentColors = []
     currentNode = list(tempNode)

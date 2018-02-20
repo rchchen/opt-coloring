@@ -4,7 +4,7 @@
 # problems to think: 1. which node to color first 2.If multiple colors are available, say from 0,1,4,5 both 2,3 are free, which one to choose?
 import math
 
-def getOccurance(item):
+def getOccurrence(item):
     return item[1]
 
 def getID(item):
@@ -13,10 +13,9 @@ def getID(item):
 	#color shall be returned from this function
 def getSmallestAvailableColor(coloredNodes, tempNode):
     #coloredNodes: [[nodeID,color],[],[]...]
-
     #tempNode, currentNode:[currentNodeID, node 1, node 2..] node 1, node 2 and etc. are connected with currentNode
     currentColors = []
-    currentNode = list(tempNode)
+    currentNode = list(tempNode) #remake list of tempNode
     del currentNode[0] #remove first element from currentNode, the remaining would be neighbor nodes
     if len(coloredNodes) == 0:
         return 0
@@ -38,24 +37,24 @@ def getSmallestAvailableColor(coloredNodes, tempNode):
 
     return currentColors[-1]+1
 
-#choose chosen node based on three criteria: a.is not colored;  b.has higher degree; c.is connected to an existing colored node;
+# choose chosen node based on three criteria: a.is not colored;  b.has higher degree; c.is connected to an existing colored node;
 def getChosenNode(rankedNodes,coloredNodes,nodesArr):
-    #rankedNodes:[[nodeID,occurance,color],[],[],...]
-    #coloredNodes: [[nodeID,color],[],[]...]
-    #nodesArr:[[currentNodeID, node 1, node 2..]]node 1, node 2 and etc. are connected with currentNode
+    # rankedNodes:[[nodeID,occurrence,color],[],[],...]
+    # coloredNodes: [[nodeID,color],[],[]...]
+    # nodesArr:[[currentNodeID, node 1, node 2..]]node 1, node 2 and etc. are connected with currentNode
     if len(coloredNodes) ==0:
         chosenNode = rankedNodes[0]
         del rankedNodes[0]
     else:
         neighbors = []
         for element in coloredNodes:
-            #find neighbors of all colored nodes including colored nodes
+            # find neighbors of all colored nodes including colored nodes
             neighbors = nodesArr[element[0]] + neighbors
 
-        tempHighestDegree = rankedNodes[0][1] #degree of first ranked node
+        tempHighestDegree = rankedNodes[0][1]  # degree of first ranked node
         chosenNode = rankedNodes[0]
         for element in rankedNodes:
-            if element[1] < tempHighestDegree: #only select nodes with highest degree
+            if element[1] < tempHighestDegree:  # only select nodes with highest degree
                 break
             if element[0] in neighbors:
                 chosenNode = element
@@ -69,7 +68,7 @@ def findCompleteGraph(node, completeGraph, nodeNeighbors):
         completeGraph.append(node[0])
 
     else:
-        del nodeNeighbors[0] #remove current node from nodeNeighbors to get true neighbors of node
+        del nodeNeighbors[0]   # remove current node from nodeNeighbors to get true neighbors of node
         if set(completeGraph) <= set(nodeNeighbors):
             completeGraph.append(node[0])
 
@@ -116,32 +115,30 @@ def solve_it(input_data):
     # Modify this code to run your optimization algorithm
 
     # parse the input
+    # generate useful data structures
     lines = input_data.split('\n')
-
     first_line = lines[0].split()
     node_count = int(first_line[0])
     edge_count = int(first_line[1])
     #generate list of nodes
-    nodes = [] #first element indicates node number, second element indicates number of occurance, 3rd element indicates node color
+    nodes = [] #first element indicates node number, second element indicates number of occurrence, 3rd element indicates node color
     nodesArr = [] #nodesArr will store the connection of nodes to a certain node[[a, 1,2,3,4..], ... ] nodes 1,2,3,4 are connected with node a.
     coloredNodes = []
     for i in range(0,node_count):
-        nodes.append([i,0,0]) #first element indicates node number, second element indicates number of occurance, 3rd element indicates node color
+        nodes.append([i,0,0]) #first element indicates node number, second element indicates number of occurrence, 3rd element indicates node color
         nodesArr.append([i])
-    edges = []
     for i in range(1, edge_count + 1):
         line = lines[i]
         parts = line.split()
-        edges.append((int(parts[0]), int(parts[1])))
         nodes[int(parts[0])][1] = nodes[int(parts[0])][1] +1
         nodes[int(parts[1])][1] = nodes[int(parts[1])][1] + 1
         nodesArr[int(parts[0])].append(int(parts[1]))
         nodesArr[int(parts[1])].append(int(parts[0]))
-    #sort nodes based on occurance, larger occruance appears in front
-    nodes = sorted(nodes, reverse=True, key=getOccurance)
+
+    #sort nodes based on occurrence, larger occurrence appears in front
+    #nodes = sorted(nodes, reverse=True, key=getOccurrence)
 
     # used to store number of colors
-    maxColor = 0
     tempColor = 0
     completeGraph = []
 
@@ -161,7 +158,7 @@ def solve_it(input_data):
         del nodes[element]
 
     maxColor = tempColor -1
-    nodes = sorted(nodes, reverse=True, key=getOccurance)
+    nodes = sorted(nodes, reverse=True, key=getOccurrence)
     node_count = node_count - len(completeGraph)
 
     for i in range(0, node_count):
@@ -196,7 +193,9 @@ if __name__ == '__main__':
     #if len(sys.argv) > 1:
         #file_location = sys.argv[1].strip()
     #following line is for testing only
+    #for gc_5_3, the best result should be or better
     file_location = 'C:/Users/Richie/Desktop/Optimization/discrete optimization/3coloring/data/gc_50_3'
+
     with open(file_location, 'r') as input_data_file:
         input_data = input_data_file.read()
     print(solve_it(input_data))

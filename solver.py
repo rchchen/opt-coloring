@@ -73,8 +73,7 @@ def getChosenNode_crt2(neighborsTobeColored, nodes, uncoloredNodes,nodesArr, cou
 		for element in tempNeighbors:
 			if nodes[element] in uncoloredNodes:
 				neighborsTobeColored.append(nodes[element])
-		neighborsTobeColored = sorted(neighborsTobeColored,reverse=True,key=getOccurrence)
-		del uncoloredNodes[0]
+		neighborsTobeColored.sort(reverse=True,key=getOccurrence)
 		counter[0] = counter[0]+1
 	# if len(coloredNodes) ==0:
 	# 	chosenNode = rankedNodes[0]
@@ -224,15 +223,15 @@ import sys
 
 if __name__ == '__main__':
 	import sys
-	#if len(sys.argv) > 1:
-	#	file_location = sys.argv[1].strip()
+	if len(sys.argv) > 1:
+		file_location = sys.argv[1].strip()
 	#following line is for testing only
 	#for gc_50_3, the best result should be or better than 6
 	#for gc_70_7, result should be better than 20
-	file_location = 'C:/Users/Richie/Desktop/Optimization/discrete optimization/3coloring/data/gc_50_3'
-	with open(file_location, 'r') as input_data_file:
-		input_data = input_data_file.read()
-		print(solve_it(input_data))
-	#else:
-		#print('This test requires an input file.  Please select one from the data directory. (i.e. python solver.py ./data/gc_4_1)')
+	#file_location = 'C:/Users/Richie/Desktop/Optimization/discrete optimization/3coloring/data/gc_50_3'
+		with open(file_location, 'r') as input_data_file:
+			input_data = input_data_file.read()
+			print(solve_it(input_data))
+	else:
+		print('This test requires an input file.  Please select one from the data directory. (i.e. python solver.py ./data/gc_4_1)')
 
